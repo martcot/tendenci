@@ -172,6 +172,14 @@ class RegistrationConfiguration(models.Model):
 
     is_guest_price = models.BooleanField(_('Guests Pay Registrant Price'), default=False)
     discount_eligible = models.BooleanField(default=True)
+    gratuity_enabled = models.BooleanField(default=False)
+    gratuity_options = models.CharField(_('Gratuity Options'),
+                                     max_length=100,
+                                     blank=True,
+                                     default='17%,18%,19%,20%',
+                                     help_text=_('Comma separated numeric numbers in percentage. '+
+                                                 'A "%" will be appended if the percent sign is not present.'))
+    gratuity_custom_option = models.BooleanField(_('Allow users to set their own gratuity'), default=False)
     allow_free_pass = models.BooleanField(default=False)
     display_registration_stats = models.BooleanField(_('Publicly Show Registration Stats'), default=False, help_text='Display the number of spots registered and the number of spots left to the public.')
 
@@ -423,6 +431,7 @@ class Registration(models.Model):
     # so that it may always be referenced
     payment_method = models.ForeignKey(GlobalPaymentMethod, null=True, on_delete=models.SET_NULL)
     amount_paid = models.DecimalField(_('Amount Paid'), max_digits=21, decimal_places=2)
+    gratuity = models.DecimalField(blank=True, default=0, max_digits=6, decimal_places=4)
 
     is_table = models.BooleanField(_('Is table registration'), default=False)
     # used for table
@@ -586,6 +595,10 @@ class Registration(models.Model):
 
         return registrant
 
+    @property
+    def graguity_in_percentage(self):
+        return '{:.1%}'.format(self.gratuity)
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.guid = str(uuid.uuid1())
@@ -660,14 +673,16 @@ class Registration(models.Model):
         invoice.due_date = datetime.now()
         invoice.ship_date = datetime.now()
         invoice.admin_notes = admin_notes
+        invoice.gratuity = self.gratuity
 
         tax = 0
         if self.reg_conf_price and self.reg_conf_price.include_tax:
             tax = self.reg_conf_price.tax_rate * self.amount_paid
             invoice.tax = tax
 
-        invoice.subtotal = self.amount_paid + tax
-        invoice.total = self.amount_paid + tax
+        invoice.subtotal = self.amount_paid
+        gratuity_amount = invoice.subtotal * invoice.gratuity
+        invoice.total = invoice.subtotal + gratuity_amount + tax
         invoice.balance = invoice.total
         invoice.save()
 
