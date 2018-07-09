@@ -1667,19 +1667,24 @@ class GratuityForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.reg_conf = kwargs.pop('reg_conf')
         super(GratuityForm, self).__init__(*args, **kwargs)
-        gratuity_options = self.reg_conf.gratuity_options.split(',')
-        gratuity_choices = []
-        for opt in gratuity_options:
-            gratuity_choices.append((opt.strip('%'), opt))
-        self.fields['gratuity'].choices = gratuity_choices
-        if not self.reg_conf.gratuity_custom_option:
+        
+        if not self.reg_conf.gratuity_enabled:
+            del self.fields['gratuity']
             del self.fields['gratuity_preferred']
         else:
-            self.fields['gratuity_preferred'].widget = PercentWidget()
-        
-        # add form-control class
-        for k in self.fields.keys():
-            self.fields[k].widget.attrs['class'] = 'form-control'
+            gratuity_options = self.reg_conf.gratuity_options.split(',')
+            gratuity_choices = []
+            for opt in gratuity_options:
+                gratuity_choices.append((opt.strip('%'), opt))
+            self.fields['gratuity'].choices = gratuity_choices
+            if not self.reg_conf.gratuity_custom_option:
+                del self.fields['gratuity_preferred']
+            else:
+                self.fields['gratuity_preferred'].widget = PercentWidget()
+            
+            # add form-control class
+            for k in self.fields.keys():
+                self.fields[k].widget.attrs['class'] = 'form-control'
         
         
 
