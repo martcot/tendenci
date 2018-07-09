@@ -86,10 +86,10 @@
 .line-on-top{
     border-top: 1px solid #ccc;
 }
-#register-button {
+/* #register-button {
     font-size: 1.2em;
     padding: 5px;
-}
+} */
 div.delete-button-wrap{
     display: none;
 }

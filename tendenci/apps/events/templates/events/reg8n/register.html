@@ -286,7 +286,7 @@
 
                         </div>
                         {% if forloop_counter == 1 and event.is_table %}
-                        <button type="button" class="btn" id="populate-fields">{% blocktrans %}Auto fill guest(s) infomation
+                        <button type="button" class="btn btn-default" id="populate-fields">{% blocktrans %}Auto fill guest(s) infomation
                             <br /><small>Guests' company name, phone, etc are the same as mine</small>{% endblocktrans %}</button>
                         {% endif %}
 
@@ -298,7 +298,7 @@
 
              {% if not event.is_table %}
             <div class="add-registrant-box">
-                <button type="button" class="add-another-registrant" onClick="add_registrants(this, 'registrant'); return false;" title="{% trans "Add another one before pressing Register & Pay" %}">{% trans "Add Another Registrant" %}</button>
+                <button type="button" class="btn btn-default" onClick="add_registrants(this, 'registrant'); return false;" title="{% trans "Add another one before pressing Register & Pay" %}">{% trans "Add Another Registrant" %}</button>
             </div>
             {% endif %}
 
@@ -344,7 +344,7 @@
                     <div id="discount-message" class="error">{{ reg_form.discount_code.errors }}</div>
                     <div class="required">{% trans "Discount Code" %}</div>
                     <div class="field">{{ reg_form.discount_code }}</div>
-                    <button type="button" id="discount_check">Check Discount</button>
+                    <button class="btn btn-default" type="button" id="discount_check">Check Discount</button>
                 </div>
             {% endif %}
 
@@ -367,7 +367,7 @@
                     <div class="field">{{ reg_form.captcha }}</div>
                 </div>
             {% endif %}
-            <input type="submit" name="commit" id="register-form-button" class="registration-green-button" value="{% if event.free_event %}{% trans 'RSVP' %}{% else %}{% trans 'Register'%}{% endif %}" />
+            <input type="submit" name="commit" id="register-form-button" class="btn btn-primary" value="{% if event.free_event %}{% trans 'RSVP' %}{% else %}{% trans 'Register'%}{% endif %}" />
 
             <div class="clear"></div>
         </div>
@@ -438,9 +438,12 @@
                 {% endif %}
             </div>
             <input type="hidden" name="confirmed" />
-            <input type="submit" name="addmore" id="add-another-btn" value="{% trans "Add Another Registrant" %}" />
+            <input class="btn btn-default" type="submit" name="addmore" value="{% trans "Add Another Registrant" %}" />
+            <br /><br />
             <div class="clear"></div>
-            <input type="submit" name="commit" id="register-button" class="registration-green-button" value="{% trans 'Confirm My Registration' %}" />
+            <br />
+            <input class="btn btn-success" type="submit" name="commit" id="register-button"  value="{% trans 'Confirm My Registration' %}" />
+            <br /><br />
             <div class="clear"></div>
         </div>
         {% endif %}
