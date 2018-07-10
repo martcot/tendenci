@@ -25,6 +25,9 @@
     	padding: 1em;
     	border: 1px solid #999;
     }
+    #id_gratuity, #id_gratuity_preferred{
+    	text-align: center;
+    }
 </style>
 {% endblock %}
 
@@ -406,17 +409,19 @@
                 
                 	{% if gratuity_form.gratuity %}
                 	<div class="form-group">
-                		<label for="id_gratuity" class="col-sm-6 control-label" style="text-align: right !important;">{{gratuity_form.gratuity.label}}</label>
-                	    <div class="col-sm-6">
+                		<label for="id_gratuity" class="col-xs-6 control-label" style="text-align: right !important;">{{gratuity_form.gratuity.label}}</label>
+                	    <div class="col-xs-6">
       					{{ gratuity_form.gratuity }}
       					</div>
                 	</div>
                 	{% endif %}
                 	{% if gratuity_form.gratuity_preferred %}
                 	<div class="form-group">
-                		<label for="id_gratuity_preferred" class="col-sm-6 control-label" style="text-align: right !important;">{% trans "*OR*" %} {{gratuity_form.gratuity_preferred.label}}</label>
-                	    <div class="col-sm-6">
+                		<label for="id_gratuity_preferred" class="col-xs-6 control-label" style="text-align: right !important;">{% trans "*OR*" %} {{gratuity_form.gratuity_preferred.label}}</label>
+                	    <div class="col-xs-6">
       					{{ gratuity_form.gratuity_preferred }}
+                         <div class="help-text">{{ gratuity_form.gratuity_preferred.help_text }}</div>
+                         <br />
                 	  </div>
                 	</div>
                 	{% endif %}

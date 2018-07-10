@@ -1662,7 +1662,8 @@ class RegistrationForm(forms.Form):
 class GratuityForm(forms.Form):
     gratuity = forms.ChoiceField(label=_('Gratuity:'), required=False, choices=[])
     gratuity_preferred = forms.FloatField(label=_('Specify your preferred gratuity:'),
-                                          min_value=0, required=False)
+                                          min_value=0, required=False,
+                                          help_text=_('Enter a number. For example, 15 for 15%.'))
 
     def __init__(self, *args, **kwargs):
         self.reg_conf = kwargs.pop('reg_conf')
